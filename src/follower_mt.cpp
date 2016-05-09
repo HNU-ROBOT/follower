@@ -30,7 +30,7 @@ public:
 
   void callback(const ImageConstPtr& rgb_image, const ImageConstPtr& depth_image)
 	{
-    ROS_INFO("Saver");
+    ROS_INFO("Saving images");
     // Process rgb image
 		cv_bridge::CvImagePtr cv_ptr;
   	try
@@ -63,8 +63,10 @@ public:
  		}
 
     saveCount ++;
-    ROS_INFO("Sleep");
-    sleep(0.5);
+    //ROS_INFO("Sleep");
+    ros::Rate loop_rate(2);
+    loop_rate.sleep();
+    //ROS_INFO("Wake");
   }
 
 	void saveImage(cv_bridge::CvImagePtr cv_ptr, std::string imageType)
@@ -114,6 +116,9 @@ public:
     int cx = m.m10 / m.m00;
     int cy = m.m01 / m.m00;
     int err = cx - image.cols / 2;
+    circle(image, Point(cx, cy),  20, Scalar(0,0,255),  -1);
+    imshow("", image);
+    waitKey(3);
     return err;
   }
 

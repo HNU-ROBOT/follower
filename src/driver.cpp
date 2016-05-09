@@ -27,6 +27,7 @@ public:
 
 	void callback(const ImageConstPtr& image)
 	{
+		ROS_INFO("Driver");
 		cv_bridge::CvImagePtr cv_ptr;
   		try
   		{

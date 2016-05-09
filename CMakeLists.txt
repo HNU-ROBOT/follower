@@ -133,20 +133,20 @@ include_directories(
 # add_dependencies(follower ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-#add_executable(follower src/follower.cpp)
+add_executable(follower_mt src/follower_mt.cpp)
 add_executable(driver src/driver.cpp)
 add_executable(saver src/saver.cpp)
-add_executable(sync src/sync.cpp)
+#add_executable(sync src/sync.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(follower_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-#target_link_libraries(follower ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+target_link_libraries(follower_mt ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 target_link_libraries(driver ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 target_link_libraries(saver ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(sync ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+#target_link_libraries(sync ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 #############
 ## Install ##
