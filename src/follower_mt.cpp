@@ -29,6 +29,23 @@ public:
   }
 
   void callback(const ImageConstPtr& rgb_image, const ImageConstPtr& depth_image)
+  {
+    if(saveCount == 0)
+    {
+      //std::cout << rgb_image->header.stamp << std::endl;
+      tm = rgb_image->header.stamp.toSec();
+      saveCount ++;
+      //std::cout << tm << std::endl;
+    }
+
+    if(rgb_image->header.stamp.toSec() - tm >= 1.0)
+      processImage(rgb_image, depth_image);
+
+    ROS_INFO("Discarding images");
+    
+  }
+
+  void processImage(const ImageConstPtr& rgb_image, const ImageConstPtr& depth_image)
 	{
     ROS_INFO("Saving images");
     // Process rgb image
@@ -38,8 +55,8 @@ public:
 			cv_ptr = cv_bridge::toCvCopy(rgb_image, sensor_msgs::image_encodings::BGR8);
 			std::cout << "RGB " << cv_ptr->header.seq << std::endl;
     	saveImage(cv_ptr, "rgb");
-    		//imshow("rgb", cv_ptr->image);
-    		//waitKey(10);
+      //imshow("rgb", cv_ptr->image);
+    	//waitKey(10);
   	}		
   	catch (cv_bridge::Exception& e)
   	{
@@ -63,10 +80,6 @@ public:
  		}
 
     saveCount ++;
-    //ROS_INFO("Sleep");
-    ros::Rate loop_rate(2);
-    loop_rate.sleep();
-    //ROS_INFO("Wake");
   }
 
 	void saveImage(cv_bridge::CvImagePtr cv_ptr, std::string imageType)
@@ -116,9 +129,9 @@ public:
     int cx = m.m10 / m.m00;
     int cy = m.m01 / m.m00;
     int err = cx - image.cols / 2;
-    circle(image, Point(cx, cy),  20, Scalar(0,0,255),  -1);
-    imshow("", image);
-    waitKey(3);
+    //circle(image, Point(cx, cy),  20, Scalar(0,0,255),  -1);
+    //imshow("", image);
+    //waitKey(3);
     return err;
   }
 
@@ -139,6 +152,7 @@ private:
   image_transport::Subscriber image_sub;
   ros::Publisher cmd_vel_pub;
   geometry_msgs::Twist base_cmd;
+  double tm;
 };
 
 int main(int argc, char** argv) 
